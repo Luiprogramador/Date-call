@@ -110,7 +110,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Partículas de fundo */
         .bg-particles {
             position: fixed;
             top: 0; left: 0;
@@ -208,7 +207,6 @@
             border-color: rgba(243,166,192,0.6);
             color: #f3a6c0;
         }
-        /* Vibração ao clicar */
         .btn-no.shake {
             animation: shake 0.4s ease-in-out;
         }
@@ -285,13 +283,23 @@
             box-shadow: 0 0 0 4px rgba(255,107,139,0.12);
         }
         .form-select {
-            background-image: url("data:image/svg+xml,...");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23f3a6c0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 1rem center;
             padding-right: 2.8rem;
         }
 
+        /* Campo personalizado */
+        .custom-activity-input {
+            display: none;
+            margin-top: 0.5rem;
+        }
+        .custom-activity-input.visible {
+            display: block;
+        }
+
         .success-icon { font-size: 3.5rem; }
+
         .confetti-piece {
             position: fixed;
             top: -10%;
@@ -299,6 +307,30 @@
             pointer-events: none;
             animation: confettiFall 3s ease-out forwards;
             border-radius: 3px;
+        }
+
+        .magic-particle {
+            position: fixed;
+            z-index: 999;
+            pointer-events: none;
+            animation: magicBurst 0.9s ease-out forwards;
+            font-size: 1.5rem;
+            line-height: 1;
+            will-change: transform, opacity;
+        }
+        @keyframes magicBurst {
+            0% {
+                transform: translate(0, 0) scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            60% {
+                opacity: 1;
+                transform: translate(var(--tx), var(--ty)) scale(1.4) rotate(var(--rot));
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), calc(var(--ty) - 40px)) scale(0.3) rotate(var(--rot));
+            }
         }
 
         .screen-hidden { display: none !important; }
@@ -327,16 +359,13 @@
     <!-- TELA 1 -->
     <div class="screen-card screen-visible" id="screen1" style="position: relative; overflow: visible;">
         <div class="text-5xl mb-2" style="animation: float 3s ease-in-out infinite;">💌</div>
-        <h1 class="title-main">
-            Tenho uma pergunta<br>importante para te fazer...
-        </h1>
+        <h1 class="title-main">Você gostaria de sair comigo para um encontro especial? 💖</h1>
         <p class="text-[#d7b8c5] text-base mt-1 mb-4" style="opacity: 0.9;">Responde com sinceridade, tá? 😊</p>
 
         <div style="display: flex; gap: 1.2rem; flex-wrap: wrap; justify-content: center; align-items: center; min-height: 60px;">
             <button class="btn btn-yes" id="btnYes">SIM ✨</button>
             <button class="btn btn-no" id="btnNo">NÃO</button>
         </div>
-        <!-- Container onde as mensagens do "Não" aparecerão -->
         <div id="noMessageContainer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 200;"></div>
     </div>
 
@@ -373,8 +402,30 @@
                     <option value="Surpresa!">🎁 Surpresa!</option>
                     <option value="Tomar um sorvete e caminhar">🍦 Tomar um sorvete e caminhar</option>
                     <option value="Café e conversa boa">☕ Café e conversa boa</option>
+                    <option value="personalizado">✏️ Outro (escrever)</option>
+                </select>
+                <!-- Campo de texto para atividade personalizada (inicialmente oculto) -->
+                <div class="custom-activity-input" id="customActivityContainer">
+                    <input type="text" id="customActivity" class="form-input" placeholder="Digite sua ideia...">
+                </div>
+            </div>
+
+            <!-- NOVO CAMPO: Vibe do encontro -->
+            <div class="form-group">
+                <label class="form-label" for="vibeSelect">🎭 Vibe do encontro</label>
+                <select id="vibeSelect" class="form-select" required>
+                    <option value="" disabled selected>Qual o clima?</option>
+                    <option value="💖 Romântico">💖 Romântico</option>
+                    <option value="🎉 Divertido">🎉 Divertido</option>
+                    <option value="🌿 Tranquilo">🌿 Tranquilo</option>
+                    <option value="🌟 Aventura">🌟 Aventura</option>
+                    <option value="🎁 Surpresa">🎁 Surpresa</option>
+                    <option value="🍕 Comida boa">🍕 Comida boa</option>
+                    <option value="🎵 Música e dança">🎵 Música e dança</option>
+                    <option value="🌙 Luau caseiro">🌙 Luau caseiro</option>
                 </select>
             </div>
+
             <button type="button" class="btn btn-confirm" id="btnConfirm">Confirmar Encontro! 💘</button>
         </form>
     </div>
@@ -406,6 +457,9 @@
         const datePicker = document.getElementById('datePicker');
         const timePicker = document.getElementById('timePicker');
         const activitySelect = document.getElementById('activitySelect');
+        const customActivityContainer = document.getElementById('customActivityContainer');
+        const customActivityInput = document.getElementById('customActivity');
+        const vibeSelect = document.getElementById('vibeSelect');
         const noMessageContainer = document.getElementById('noMessageContainer');
 
         // Data mínima e padrão
@@ -422,7 +476,7 @@
         datePicker.value = `${tomYear}-${tomMonth}-${tomDay}`;
         timePicker.value = '19:00';
 
-        // Lista de frases para o botão "Não"
+        // Lista de frases para o botão "Não" (30 frases)
         const frasesNao = [
             "😢 Por favor, aceitaaa...",
             "🥺 Vai, diz que sim!",
@@ -433,8 +487,40 @@
             "🥰 Só tem SIM no coração!",
             "😅 Tenta de novo?",
             "💖 Olha nos meus olhos...",
-            "✨ Prometo que vai ser legal!"
+            "✨ Prometo que vai ser legal!",
+            "🍦 Sorvete por minha conta?",
+            "🌸 Você vai perder um encontro incrível!",
+            "🎵 Eu até preparei uma playlist!",
+            "🐶 Meu cachorro já gostou de você...",
+            "🌙 Vamos ver as estrelas?",
+            "💌 Aceita, vai!",
+            "🤗 Um abraço apertado espera!",
+            "🎁 Tenho uma surpresa...",
+            "😋 Comida boa envolvida!",
+            "📸 Fotos lindas para o feed!",
+            "🕯️ Jantar à luz de velas?",
+            "💭 Pensa bem... é SIM na certa!",
+            "😍 Não resiste a esse convite!",
+            "🦄 Seria mágico!",
+            "🧁 Vai ter sobremesa!",
+            "🎈 Bora fazer memórias?",
+            "💎 Você merece esse momento!",
+            "🌻 Um encontro para alegrar a semana!",
+            "🎀 Diz que sim, por favorzinho?",
+            "💞 O universo quer que você aceite!"
         ];
+
+        // Mostra/oculta campo personalizado conforme seleção
+        activitySelect.addEventListener('change', function() {
+            if (activitySelect.value === 'personalizado') {
+                customActivityContainer.classList.add('visible');
+                customActivityInput.setAttribute('required', 'required');
+            } else {
+                customActivityContainer.classList.remove('visible');
+                customActivityInput.removeAttribute('required');
+                customActivityInput.value = '';
+            }
+        });
 
         function switchScreen(hideScreen, showScreen) {
             if (hideScreen && !hideScreen.classList.contains('screen-hidden')) {
@@ -499,33 +585,74 @@
             }
         }
 
-        // Mostra balão com frase aleatória
+        function spawnMagicBurst(buttonElement, count = 30) {
+            const rect = buttonElement.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            const symbols = ['✨', '💖', '🌟', '💕', '💫', '⭐', '💗', '✨', '💘', '❣️'];
+            const colors = ['#ff6b8b', '#f3a6c0', '#ff8fa8', '#ffb3c6', '#ffffff', '#ffe0e6'];
+
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('magic-particle');
+
+                if (Math.random() > 0.4) {
+                    particle.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                    particle.style.fontSize = (Math.random() * 1.8 + 1.2) + 'rem';
+                } else {
+                    const size = Math.random() * 14 + 8;
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+                    particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    particle.style.borderRadius = '50%';
+                    particle.style.boxShadow = `0 0 12px ${colors[Math.floor(Math.random() * colors.length)]}`;
+                }
+
+                particle.style.left = centerX + 'px';
+                particle.style.top = centerY + 'px';
+                const startOffsetX = (Math.random() - 0.5) * 30;
+                const startOffsetY = (Math.random() - 0.5) * 30;
+                particle.style.transform = `translate(${startOffsetX}px, ${startOffsetY}px) scale(0)`;
+                particle.style.position = 'fixed';
+                particle.style.zIndex = '1001';
+                particle.style.pointerEvents = 'none';
+
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 150 + 60;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance - 30;
+                const rot = (Math.random() - 0.5) * 400;
+
+                particle.style.setProperty('--tx', tx + 'px');
+                particle.style.setProperty('--ty', ty + 'px');
+                particle.style.setProperty('--rot', rot + 'deg');
+
+                document.body.appendChild(particle);
+
+                setTimeout(() => {
+                    if (particle.parentNode) particle.parentNode.removeChild(particle);
+                }, 900);
+            }
+        }
+
         function showNoMessage() {
-            // Remove mensagens antigas
             noMessageContainer.innerHTML = '';
-
             const frase = frasesNao[Math.floor(Math.random() * frasesNao.length)];
-
             const bubble = document.createElement('div');
             bubble.className = 'no-message-bubble';
             bubble.textContent = frase;
 
-            // Posiciona próximo ao botão "Não"
             const btnRect = btnNo.getBoundingClientRect();
             const containerRect = screen1.getBoundingClientRect();
-
-            // Coordenadas relativas ao container screen1
             const left = btnRect.left - containerRect.left + (btnRect.width / 2);
-            const top = btnRect.top - containerRect.top - 10; // um pouco acima do botão
-
+            const top = btnRect.top - containerRect.top - 10;
             bubble.style.position = 'absolute';
             bubble.style.left = left + 'px';
             bubble.style.top = top + 'px';
             bubble.style.transform = 'translate(-50%, -100%)';
-
             noMessageContainer.appendChild(bubble);
 
-            // Remove após 2 segundos
             setTimeout(() => {
                 if (bubble.parentNode) bubble.remove();
             }, 2000);
@@ -534,24 +661,21 @@
         // Eventos do botão "Não"
         btnNo.addEventListener('click', function(e) {
             e.preventDefault();
-            // Animação de vibração
             btnNo.classList.add('shake');
             setTimeout(() => btnNo.classList.remove('shake'), 400);
-            // Mostra a frase
             showNoMessage();
-            // Vibração tátil se disponível
             if (navigator.vibrate) navigator.vibrate(25);
         });
 
-        // Suporte a toque (mobile) - mesmo comportamento
         btnNo.addEventListener('touchstart', function(e) {
-            // Não previne o clique, apenas adiciona vibração extra
             if (navigator.vibrate) navigator.vibrate(15);
         }, { passive: true });
 
         // Botão SIM
-        btnYes.addEventListener('click', function() {
+        btnYes.addEventListener('click', function(e) {
+            spawnMagicBurst(btnYes, 35);
             spawnConfetti(100);
+            if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
             setTimeout(() => {
                 switchScreen(screen1, screen2);
             }, 400);
@@ -562,13 +686,35 @@
             setTimeout(() => screen3.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
         });
 
+        // Botão Confirmar (agora com campo personalizado e vibe)
         btnConfirm.addEventListener('click', function() {
             const selectedDate = datePicker.value;
             const selectedTime = timePicker.value;
             const selectedActivity = activitySelect.value;
+            const customActivity = customActivityInput.value.trim();
+            const selectedVibe = vibeSelect.value;
 
-            if (!selectedDate || !selectedTime || !selectedActivity) {
-                [datePicker, timePicker, activitySelect].forEach(el => {
+            // Determina a atividade final
+            let finalActivity = '';
+            if (selectedActivity === 'personalizado') {
+                if (!customActivity) {
+                    // Destaca o campo personalizado se vazio
+                    customActivityInput.style.borderColor = '#ff6b8b';
+                    customActivityInput.style.boxShadow = '0 0 0 4px rgba(255,107,139,0.2)';
+                    setTimeout(() => {
+                        customActivityInput.style.borderColor = 'rgba(243,166,192,0.2)';
+                        customActivityInput.style.boxShadow = '';
+                    }, 1500);
+                    if (navigator.vibrate) navigator.vibrate([30,50,30]);
+                    return;
+                }
+                finalActivity = customActivity;
+            } else {
+                finalActivity = activitySelect.options[activitySelect.selectedIndex].text;
+            }
+
+            if (!selectedDate || !selectedTime || !selectedActivity || !selectedVibe) {
+                [datePicker, timePicker, activitySelect, vibeSelect].forEach(el => {
                     if (!el.value) {
                         el.style.borderColor = '#ff6b8b';
                         el.style.boxShadow = '0 0 0 4px rgba(255,107,139,0.2)';
@@ -584,7 +730,12 @@
 
             const [ano, mes, dia] = selectedDate.split('-');
             const formattedDate = `${dia}/${mes}/${ano}`;
-            const mensagem = `Oi! Passei para confirmar nosso encontro! 🥰%0A%0A📅 *Data:* ${formattedDate}%0A⏰ *Horário:* ${selectedTime}%0A🍕 *O que vamos fazer:* ${selectedActivity}%0A%0AMal posso esperar! ✨💖`;
+            const mensagem = `Oi! Passei para confirmar nosso encontro! 🥰%0A%0A` +
+                `📅 *Data:* ${formattedDate}%0A` +
+                `⏰ *Horário:* ${selectedTime}%0A` +
+                `🍕 *O que vamos fazer:* ${finalActivity}%0A` +
+                `🎭 *Vibe:* ${selectedVibe}%0A%0A` +
+                `Mal posso esperar! ✨💖`;
             const whatsappURL = `https://api.whatsapp.com/send?phone=${SEU_NUMERO_WHATSAPP}&text=${mensagem}`;
 
             switchScreen(screen3, screenSuccess);
@@ -593,7 +744,6 @@
             setTimeout(() => window.open(whatsappURL, '_blank'), 1500);
         });
 
-        // Partículas de fundo
         function createBgParticles() {
             const container = document.getElementById('bgParticles');
             for (let i = 0; i < 18; i++) {
