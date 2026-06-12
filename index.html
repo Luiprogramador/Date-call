@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convite Especial 💖</title>
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <script>
+        // Configuração customizada do Tailwind para o tema Dark Pink
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-pink': {
+                            900: '#12080a',
+                            800: '#1a0f12',
+                            700: '#2b1820',
+                            600: '#3d2029',
+                        },
+                        'accent': {
+                            DEFAULT: '#ff6b8b',
+                            light: '#f3a6c0',
+                            glow: '#ff8fa8',
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                        'confetti-fall': 'confettiFall 3s ease-out forwards',
+                        'fade-in': 'fadeIn 0.8s ease-out',
+                        'slide-up': 'slideUp 0.6s cubic-bezier(0.22, 1, 0.36, 1)',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': {
+                                boxShadow: '0 0 15px rgba(255, 107, 139, 0.4), 0 0 30px rgba(255, 107, 139, 0.15)',
+                                transform: 'scale(1)'
+                            },
+                            '50%': {
+                                boxShadow: '0 0 25px rgba(255, 107, 139, 0.7), 0 0 50px rgba(255, 107, 139, 0.35), 0 0 70px rgba(255, 107, 139, 0.2)',
+                                transform: 'scale(1.04)'
+                            },
+                        },
+                        float: {
+                            '0%, 100%': {
+                                transform: 'translateY(0px)'
+                            },
+                            '50%': {
+                                transform: 'translateY(-8px)'
+                            },
+                        },
+                        confettiFall: {
+                            '0%': {
+                                transform: 'translateY(-120vh) rotate(0deg)',
+                                opacity: '1'
+                            },
+                            '80%': {
+                                opacity: '1'
+                            },
+                            '100%': {
+                                transform: 'translateY(110vh) rotate(720deg)',
+                                opacity: '0'
+                            },
+                        },
+                        fadeIn: {
+                            '0%': {
+                                opacity: '0',
+                                transform: 'scale(0.9)'
+                            },
+                            '100%': {
+                                opacity: '1',
+                                transform: 'scale(1)'
+                            },
+                        },
+                        slideUp: {
+                            '0%': {
+                                opacity: '0',
+                                transform: 'translateY(30px)'
+                            },
+                            '100%': {
+                                opacity: '1',
+                                transform: 'translateY(0)'
+                            },
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+
+    <!-- Fonte Google - Plus Jakarta Sans (moderna e elegante) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* Estilos globais e customizações adicionais */
+
+        :root {
+            --bg-primary: #12080a;
+            --bg-secondary: #1a0f12;
+            --accent: #ff6b8b;
+            --accent-light: #f3a6c0;
+            --accent-glow: #ff8fa8;
+            --text-primary: #fce4ec;
+            --text-secondary: #d7b8c5;
+            --card-bg: #1f1418;
+            --border-subtle: rgba(243, 166, 192, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 1rem;
+            overflow-x: hidden;
+            position: relative;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Partículas de fundo sutis */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .bg-particle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 107, 139, 0.08) 0%, transparent 70%);
+            animation: floatParticle 8s infinite ease-in-out;
+        }
+        @keyframes floatParticle {
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.4;
+            }
+            33% {
+                transform: translate(30px, -40px) scale(1.3);
+                opacity: 0.7;
+            }
+            66% {
+                transform: translate(-25px, 25px) scale(0.9);
+                opacity: 0.3;
+            }
+        }
+
+        /* Container principal */
+        .main-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 520px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        /* Cards das telas */
+        .screen-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-subtle);
+            border-radius: 2rem;
+            padding: 2.5rem 2rem;
+            width: 100%;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(243, 166, 192, 0.08) inset;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Título principal */
+        .title-main {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            line-height: 1.3;
+        }
+        .title-main span {
+            color: var(--accent-light);
+            font-weight: 800;
+        }
+
+        /* Botões */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.9rem 2rem;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            letter-spacing: -0.01em;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            user-select: none;
+            -webkit-user-select: none;
+            position: relative;
+            white-space: nowrap;
+            min-width: 100px;
+        }
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #ff6b8b 0%, #e85578 100%);
+            color: #fff;
+            box-shadow: 0 8px 30px rgba(255, 107, 139, 0.35), 0 2px 8px rgba(255, 107, 139, 0.2);
+            animation: pulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            font-size: 1.15rem;
+            padding: 1rem 2.5rem;
+            letter-spacing: 0.03em;
+        }
+        .btn-yes:hover {
+            box-shadow: 0 12px 40px rgba(255, 107, 139, 0.55), 0 4px 15px rgba(255, 107, 139, 0.35);
+            transform: translateY(-2px) scale(1.03);
+            background: linear-gradient(135deg, #ff7d99 0%, #f06080 100%);
+        }
+
+        .btn-no {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 2px solid rgba(243, 166, 192, 0.3);
+            position: relative;
+            /* importante para movimentação */
+            z-index: 50;
+            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .btn-no:hover {
+            border-color: rgba(243, 166, 192, 0.6);
+            color: #f3a6c0;
+        }
+
+        /* Botão fugitivo - quando está fugindo */
+        .btn-no.fleeing {
+            position: fixed;
+            /* sai do fluxo normal e pode se mover pela tela toda */
+            z-index: 999;
+            transition: top 0.35s cubic-bezier(0.22, 1, 0.36, 1), left 0.35s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            background: var(--card-bg);
+            border-color: rgba(255, 107, 139, 0.5);
+        }
+
+        .btn-advance {
+            background: linear-gradient(135deg, #f3a6c0 0%, #ff6b8b 100%);
+            color: #1a0f12;
+            font-weight: 700;
+            box-shadow: 0 6px 25px rgba(243, 166, 192, 0.3);
+            letter-spacing: 0.02em;
+        }
+        .btn-advance:hover {
+            box-shadow: 0 10px 35px rgba(243, 166, 192, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-confirm {
+            background: linear-gradient(135deg, #ff6b8b 0%, #f3a6c0 100%);
+            color: #12080a;
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 1rem 2rem;
+            box-shadow: 0 8px 30px rgba(255, 107, 139, 0.4);
+            letter-spacing: 0.02em;
+            width: 100%;
+        }
+        .btn-confirm:hover {
+            box-shadow: 0 14px 40px rgba(255, 107, 139, 0.6);
+            transform: translateY(-3px);
+        }
+
+        /* Formulário */
+        .form-group {
+            margin-bottom: 1.3rem;
+            text-align: left;
+        }
+        .form-label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--accent-light);
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.02em;
+        }
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 0.85rem 1.2rem;
+            border-radius: 1rem;
+            border: 2px solid rgba(243, 166, 192, 0.2);
+            background: rgba(26, 15, 18, 0.7);
+            color: var(--text-primary);
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+        .form-input:focus,
+        .form-select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(255, 107, 139, 0.12);
+            background: rgba(30, 18, 22, 0.9);
+        }
+        .form-select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23f3a6c0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.8rem;
+        }
+        /* Estilização do input date e time */
+        .form-input[type="date"]::-webkit-calendar-picker-indicator,
+        .form-input[type="time"]::-webkit-calendar-picker-indicator {
+            filter: invert(0.7) sepia(1) saturate(5) hue-rotate(310deg) brightness(1.2);
+            cursor: pointer;
+            opacity: 0.8;
+        }
+        .form-input[type="date"]:hover::-webkit-calendar-picker-indicator,
+        .form-input[type="time"]:hover::-webkit-calendar-picker-indicator {
+            opacity: 1;
+        }
+
+        /* Mensagem de sucesso */
+        .success-icon {
+            font-size: 3.5rem;
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            80% {
+                transform: scale(1.15);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Confetes */
+        .confetti-piece {
+            position: fixed;
+            top: -10%;
+            z-index: 1000;
+            pointer-events: none;
+            animation: confettiFall 3s ease-out forwards;
+            border-radius: 3px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 480px) {
+            .screen-card {
+                padding: 2rem 1.3rem;
+                border-radius: 1.5rem;
+            }
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.95rem;
+            }
+            .btn-yes {
+                font-size: 1.05rem;
+                padding: 0.9rem 2rem;
+            }
+            .btn-no {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.95rem;
+            }
+            .btn-no.fleeing {
+                /* em mobile, o botão fugitivo pode ser menor */
+                padding: 0.7rem 1.3rem;
+                font-size: 0.9rem;
+            }
+            .title-main {
+                font-size: 1.35rem;
+            }
+            .form-input,
+            .form-select {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Telas ocultas */
+        .screen-hidden {
+            display: none !important;
+        }
+
+        /* Animações das telas */
+        .screen-visible {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Efeito de shimmer sutil no card */
+        .shimmer-subtle {
+            position: relative;
+            overflow: hidden;
+        }
+        .shimmer-subtle::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg,
+                    transparent 40%,
+                    rgba(255, 255, 255, 0.015) 45%,
+                    rgba(255, 255, 255, 0.03) 50%,
+                    rgba(255, 255, 255, 0.015) 55%,
+                    transparent 60%);
+            animation: shimmerRotate 12s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes shimmerRotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Partículas de fundo -->
+    <div class="bg-particles" id="bgParticles" aria-hidden="true"></div>
+
+    <!-- Container principal -->
+    <div class="main-container" id="mainContainer">
+
+        <!-- ==================== TELA 1: O CONVITE ==================== -->
+        <div class="screen-card shimmer-subtle screen-visible" id="screen1">
+            <!-- Ícone decorativo -->
+            <div class="text-5xl mb-2" style="animation: float 3s ease-in-out infinite;">💌</div>
+
+            <h1 class="title-main">
+                Tenho uma pergunta<br>importante para te fazer...
+            </h1>
+            <p class="text-[#d7b8c5] text-sm mt-1 mb-3" style="opacity: 0.8;">
+                Responde com sinceridade, tá? 😊
+            </p>
+
+            <!-- Container dos botões -->
+            <div style="display: flex; gap: 1.2rem; flex-wrap: wrap; justify-content: center; align-items: center; position: relative; min-height: 60px;"
+            id="buttonsContainer">
+            <!-- Botão SIM -->
+            <button class="btn btn-yes" id="btnYes" aria-label="Sim">
+                SIM ✨
+            </button>
+
+            <!-- Botão NÃO (fugitivo) -->
+            <button class="btn btn-no" id="btnNo" aria-label="Não">
+                NÃO
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== TELA 2: A REAÇÃO ==================== -->
+    <div class="screen-card shimmer-subtle screen-hidden" id="screen2">
+        <div class="success-icon mb-2">🎉</div>
+        <h2 class="title-main" style="font-size: 1.6rem;">
+            Fico feliz em você dizer sim!
+        </h2>
+        <p class="text-[#d7b8c5] text-base mt-1 mb-4" style="opacity: 0.9;">
+            Pensei que você ia dizer não kkkk 💖
+        </p>
+        <button class="btn btn-advance" id="btnAdvance">
+            Avançar para os detalhes ✨
+        </button>
+    </div>
+
+    <!-- ==================== TELA 3: O AGENDAMENTO ==================== -->
+    <div class="screen-card shimmer-subtle screen-hidden" id="screen3">
+        <div class="text-4xl mb-1">📋</div>
+        <h2 class="title-main" style="font-size: 1.5rem; margin-bottom: 0.3rem;">
+            Vamos marcar!
+        </h2>
+        <p class="text-[#d7b8c5] text-sm mb-4" style="opacity: 0.85;">
+            Escolha os detalhes do nosso encontro 💕
+        </p>
+
+        <!-- Formulário -->
+        <form id="dateForm" style="width: 100%; text-align: left;" onsubmit="return false;">
+            <!-- Data -->
+            <div class="form-group">
+                <label class="form-label" for="datePicker">📅 Qual dia?</label>
+                <input type="date" id="datePicker" class="form-input" required
+                min="" title="Escolha uma data">
+            </div>
+
+            <!-- Horário -->
+            <div class="form-group">
+                <label class="form-label" for="timePicker">⏰ Que horas?</label>
+                <input type="time" id="timePicker" class="form-input" required
+                min="08:00" max="23:00" title="Escolha um horário">
+            </div>
+
+            <!-- Atividade -->
+            <div class="form-group">
+                <label class="form-label" for="activitySelect">🍕 O que fazer?</label>
+                <select id="activitySelect" class="form-select" required>
+                    <option value="" disabled selected>Selecione uma opção...</option>
+                    <option value="Jantar em um lugar legal">🍽️ Jantar em um lugar legal</option>
+                    <option value="Comer um hambúrguer">🍔 Comer um hambúrguer</option>
+                    <option value="Pegar um cinema">🎬 Pegar um cinema</option>
+                    <option value="Surpresa!">🎁 Surpresa!</option>
+                    <option value="Tomar um sorvete e caminhar">🍦 Tomar um sorvete e caminhar</option>
+                    <option value="Café e conversa boa">☕ Café e conversa boa</option>
+                </select>
+            </div>
+
+            <!-- Botão Confirmar -->
+            <button type="button" class="btn btn-confirm" id="btnConfirm">
+                Confirmar Encontro! 💘
+            </button>
+        </form>
+    </div>
+
+    <!-- ==================== TELA DE SUCESSO (após confirmar) ==================== -->
+    <div class="screen-card shimmer-subtle screen-hidden" id="screenSuccess">
+        <div class="success-icon mb-2">✅</div>
+        <h2 class="title-main" style="font-size: 1.5rem;">
+            Encontro confirmado!
+        </h2>
+        <p class="text-[#d7b8c5] text-base mt-1 mb-1" style="opacity: 0.9;">
+            Redirecionando para o WhatsApp...
+        </p>
+        <p class="text-[#f3a6c0] text-sm" style="opacity: 0.7;">
+            Você será levada(o) para confirmar tudinho 💖
+        </p>
+        <div style="margin-top: 0.5rem;">
+            <div style="width: 35px; height: 35px; border: 3px solid rgba(243,166,192,0.3); border-top-color: #ff6b8b; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto;"
+            aria-label="Carregando"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ==================== CONFIGURAÇÃO ====================
+        // ⚠️ SUBSTITUA PELO SEU NÚMERO DE WHATSAPP (com DDD, sem espaços, sem "+")
+        // Exemplo: 5561999999999 (55 = Brasil, 61 = DDD, 999999999 = número)
+        const SEU_NUMERO_WHATSAPP = '5561999999999'; // <-- COLOQUE SEU NÚMERO AQUI
+
+        // ==================== ELEMENTOS DO DOM ====================
+        const screen1 = document.getElementById('screen1');
+        const screen2 = document.getElementById('screen2');
+        const screen3 = document.getElementById('screen3');
+        const screenSuccess = document.getElementById('screenSuccess');
+        const btnYes = document.getElementById('btnYes');
+        const btnNo = document.getElementById('btnNo');
+        const btnAdvance = document.getElementById('btnAdvance');
+        const btnConfirm = document.getElementById('btnConfirm');
+        const buttonsContainer = document.getElementById('buttonsContainer');
+        const datePicker = document.getElementById('datePicker');
+        const timePicker = document.getElementById('timePicker');
+        const activitySelect = document.getElementById('activitySelect');
+        const bgParticlesContainer = document.getElementById('bgParticles');
+
+        // ==================== INICIALIZAÇÃO ====================
+        // Define data mínima como hoje
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        datePicker.setAttribute('min', `${year}-${month}-${day}`);
+        // Define data padrão como amanhã
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+        const tomYear = tomorrow.getFullYear();
+        const tomMonth = String(tomorrow.getMonth() + 1).padStart(2, '0');
+        const tomDay = String(tomorrow.getDate()).padStart(2, '0');
+        datePicker.value = `${tomYear}-${tomMonth}-${tomDay}`;
+        // Horário padrão: 19:00
+        timePicker.value = '19:00';
+
+        // ==================== FUNÇÕES AUXILIARES ====================
+
+        /** Transição suave entre telas */
+        function switchScreen(hideScreen, showScreen) {
+            if (hideScreen && !hideScreen.classList.contains('screen-hidden')) {
+                hideScreen.style.opacity = '1';
+                hideScreen.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+                hideScreen.style.opacity = '0';
+                hideScreen.style.transform = 'scale(0.96)';
+                setTimeout(() => {
+                    hideScreen.classList.add('screen-hidden');
+                    hideScreen.classList.remove('screen-visible');
+                    hideScreen.style.opacity = '';
+                    hideScreen.style.transform = '';
+                    // Mostra a nova tela
+                    showScreen.classList.remove('screen-hidden');
+                    showScreen.classList.add('screen-visible');
+                    showScreen.style.opacity = '0';
+                    showScreen.style.transform = 'scale(0.96)';
+                    requestAnimationFrame(() => {
+                        showScreen.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                        showScreen.style.opacity = '1';
+                        showScreen.style.transform = 'scale(1)';
+                    });
+                    // Limpa transição após animação
+                    setTimeout(() => {
+                        showScreen.style.transition = '';
+                        showScreen.style.opacity = '';
+                        showScreen.style.transform = '';
+                    }, 550);
+                }, 350);
+            } else if (!hideScreen) {
+                // Caso inicial (sem tela para esconder)
+                showScreen.classList.remove('screen-hidden');
+                showScreen.classList.add('screen-visible');
+                showScreen.style.opacity = '0';
+                showScreen.style.transform = 'scale(0.96)';
+                requestAnimationFrame(() => {
+                    showScreen.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    showScreen.style.opacity = '1';
+                    showScreen.style.transform = 'scale(1)';
+                });
+                setTimeout(() => {
+                    showScreen.style.transition = '';
+                    showScreen.style.opacity = '';
+                    showScreen.style.transform = '';
+                }, 550);
+            }
+        }
+
+        /** Gera confetes na tela */
+        function spawnConfetti(count = 80) {
+            const colors = [
+                '#ff6b8b', '#f3a6c0', '#ff8fa8', '#ffb3c6',
+                '#ff4770', '#ffd1dc', '#ffe0e6', '#ffffff',
+                '#ff6b8b', '#f3a6c0', '#ffb3c6', '#ff8fa8',
+            ];
+            const shapes = ['square', 'circle'];
+
+            for (let i = 0; i < count; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti-piece');
+                const size = Math.random() * 10 + 6; // 6px a 16px
+                confetti.style.width = size + 'px';
+                confetti.style.height = (shapes[Math.floor(Math.random() * shapes.length)] === 'circle') ?
+                    size + 'px' :
+                    size * (Math.random() * 1.5 + 0.5) + 'px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = -(Math.random() * 20 + 5) + '%';
+                confetti.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
+                confetti.style.animationDelay = Math.random() * 1.5 + 's';
+                if (shapes[Math.floor(Math.random() * shapes.length)] === 'circle') {
+                    confetti.style.borderRadius = '50%';
+                } else {
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '2px' : '4px';
+                }
+                // Pequena variação de rotação inicial
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                document.body.appendChild(confetti);
+
+                // Remove após a animação
+                const duration = parseFloat(confetti.style.animationDuration) + parseFloat(confetti.style
+                    .animationDelay);
+                setTimeout(() => {
+                    if (confetti.parentNode) {
+                        confetti.parentNode.removeChild(confetti);
+                    }
+                }, duration * 1000 + 300);
+            }
+        }
+
+        /** Move o botão NÃO para uma posição aleatória na viewport */
+        function moveNoButton() {
+            const btn = btnNo;
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            const btnWidth = btn.offsetWidth || 100;
+            const btnHeight = btn.offsetHeight || 48;
+
+            // Margem de segurança para não sair da tela
+            const margin = 20;
+            const maxX = viewportWidth - btnWidth - margin;
+            const maxY = viewportHeight - btnHeight - margin;
+            const minX = margin;
+            const minY = margin;
+
+            const randomX = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
+            const randomY = Math.floor(Math.random() * (maxY - minY + 1)) + minY;
+
+            // Adiciona classe 'fleeing' se ainda não tiver
+            if (!btn.classList.contains('fleeing')) {
+                // Salva a posição original (relativa ao container) antes de mudar para fixed
+                const rect = btn.getBoundingClientRect();
+                btn.dataset.originalLeft = rect.left;
+                btn.dataset.originalTop = rect.top;
+                btn.classList.add('fleeing');
+                // Posiciona imediatamente na posição atual antes de animar para a nova
+                btn.style.left = rect.left + 'px';
+                btn.style.top = rect.top + 'px';
+                // Força reflow
+                btn.offsetHeight;
+            }
+
+            // Move para nova posição
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
+
+            // Efeito visual de "fugindo"
+            btn.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                btn.style.transform = 'scale(1)';
+            }, 150);
+
+            // Vibração sutil no container (feedback)
+            if (buttonsContainer) {
+                buttonsContainer.style.transition = 'transform 0.1s ease';
+                buttonsContainer.style.transform = 'translateX(-3px)';
+                setTimeout(() => {
+                    buttonsContainer.style.transform = 'translateX(3px)';
+                    setTimeout(() => {
+                        buttonsContainer.style.transform = 'translateX(0)';
+                    }, 80);
+                }, 80);
+            }
+        }
+
+        /** Reseta o botão NÃO para a posição original (caso necessário) */
+        function resetNoButton() {
+            const btn = btnNo;
+            if (btn.classList.contains('fleeing')) {
+                btn.classList.remove('fleeing');
+                btn.style.left = '';
+                btn.style.top = '';
+                btn.style.transform = '';
+            }
+        }
+
+        // ==================== EVENT LISTENERS ====================
+
+        // Botão NÃO: foge ao passar o mouse (desktop)
+        btnNo.addEventListener('mouseenter', function(e) {
+            // Verifica se o mouse realmente está sobre o botão (evita triggers falsos)
+            moveNoButton();
+        });
+
+        // Botão NÃO: foge ao toque (mobile)
+        btnNo.addEventListener('touchstart', function(e) {
+            e.preventDefault(); // previne qualquer ação de clique
+            moveNoButton();
+            // Vibração se disponível
+            if (navigator.vibrate) {
+                navigator.vibrate(15);
+            }
+        }, { passive: false });
+
+        // Botão NÃO: se de alguma forma for clicado, também foge
+        btnNo.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            moveNoButton();
+            return false;
+        });
+
+        // Se o botão NÃO receber foco por teclado, move também
+        btnNo.addEventListener('focus', function(e) {
+            moveNoButton();
+            // Perde o foco imediatamente
+            btnNo.blur();
+        });
+
+        // Botão SIM: transição para tela 2 + confetes
+        btnYes.addEventListener('click', function() {
+            // Confetes!
+            spawnConfetti(100);
+
+            // Pequeno delay para os confetes começarem antes da transição
+            setTimeout(() => {
+                switchScreen(screen1, screen2);
+                // Reseta botão NÃO caso ele esteja fugindo
+                resetNoButton();
+            }, 400);
+        });
+
+        // Botão Avançar: transição para tela 3 (formulário)
+        btnAdvance.addEventListener('click', function() {
+            switchScreen(screen2, screen3);
+            // Scroll suave para o topo do formulário em mobile
+            setTimeout(() => {
+                screen3.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        });
+
+        // Botão Confirmar: valida e envia para WhatsApp
+        btnConfirm.addEventListener('click', function() {
+            const selectedDate = datePicker.value;
+            const selectedTime = timePicker.value;
+            const selectedActivity = activitySelect.value;
+
+            // Validação simples
+            if (!selectedDate || !selectedTime || !selectedActivity) {
+                // Destaque visual nos campos vazios
+                if (!selectedDate) {
+                    datePicker.style.borderColor = '#ff6b8b';
+                    datePicker.style.boxShadow = '0 0 0 4px rgba(255,107,139,0.2)';
+                    setTimeout(() => {
+                        datePicker.style.borderColor = 'rgba(243,166,192,0.2)';
+                        datePicker.style.boxShadow = '';
+                    }, 1500);
+                }
+                if (!selectedTime) {
+                    timePicker.style.borderColor = '#ff6b8b';
+                    timePicker.style.boxShadow = '0 0 0 4px rgba(255,107,139,0.2)';
+                    setTimeout(() => {
+                        timePicker.style.borderColor = 'rgba(243,166,192,0.2)';
+                        timePicker.style.boxShadow = '';
+                    }, 1500);
+                }
+                if (!selectedActivity) {
+                    activitySelect.style.borderColor = '#ff6b8b';
+                    activitySelect.style.boxShadow = '0 0 0 4px rgba(255,107,139,0.2)';
+                    setTimeout(() => {
+                        activitySelect.style.borderColor = 'rgba(243,166,192,0.2)';
+                        activitySelect.style.boxShadow = '';
+                    }, 1500);
+                }
+                // Vibração de feedback
+                if (navigator.vibrate) {
+                    navigator.vibrate([30, 50, 30]);
+                }
+                return;
+            }
+
+            // Formata a data de forma mais legível (ex: 26/06/2026)
+            const dateParts = selectedDate.split('-');
+            const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+
+            // Formata o horário (ex: 19:00)
+            const formattedTime = selectedTime;
+
+            // Monta a mensagem
+            const mensagem =
+                `Oi! Passei para confirmar nosso encontro! 🥰%0A%0A` +
+                `📅 *Data:* ${formattedDate}%0A` +
+                `⏰ *Horário:* ${formattedTime}%0A` +
+                `🍕 *O que vamos fazer:* ${selectedActivity}%0A%0A` +
+                `Mal posso esperar! ✨💖`;
+
+            // Monta a URL do WhatsApp
+            const whatsappURL =
+                `https://api.whatsapp.com/send?phone=${SEU_NUMERO_WHATSAPP}&text=${mensagem}`;
+
+            // Mostra tela de sucesso
+            switchScreen(screen3, screenSuccess);
+
+            // Mais confetes!
+            spawnConfetti(60);
+
+            // Vibração de sucesso
+            if (navigator.vibrate) {
+                navigator.vibrate([50, 30, 50, 30, 100]);
+            }
+
+            // Redireciona para o WhatsApp após um breve delay
+            setTimeout(() => {
+                window.open(whatsappURL, '_blank');
+            }, 1500);
+        });
+
+        // ==================== PARTÍCULAS DE FUNDO ====================
+        function createBgParticles() {
+            const container = bgParticlesContainer;
+            const particleCount = 18;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('bg-particle');
+                const size = Math.random() * 180 + 60; // 60px a 240px
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 90 + '%';
+                particle.style.top = Math.random() * 90 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 6) + 's';
+                container.appendChild(particle);
+            }
+        }
+        createBgParticles();
+
+        // ==================== AJUSTES RESPONSIVOS ====================
+        // Redimensionamento: garante que o botão NÃO fugitivo não saia da tela
+        window.addEventListener('resize', () => {
+            if (btnNo.classList.contains('fleeing')) {
+                const btnWidth = btnNo.offsetWidth || 100;
+                const btnHeight = btnNo.offsetHeight || 48;
+                const margin = 20;
+                const maxX = window.innerWidth - btnWidth - margin;
+                const maxY = window.innerHeight - btnHeight - margin;
+                let currentLeft = parseFloat(btnNo.style.left) || 0;
+                let currentTop = parseFloat(btnNo.style.top) || 0;
+                if (currentLeft > maxX) btnNo.style.left = maxX + 'px';
+                if (currentTop > maxY) btnNo.style.top = maxY + 'px';
+                if (currentLeft < margin) btnNo.style.left = margin + 'px';
+                if (currentTop < margin) btnNo.style.top = margin + 'px';
+            }
+        });
+
+        // ==================== LOG INICIAL (opcional) ====================
+        console.log('%c💖 Convite Especial - Dark Pink Theme %c🌹',
+            'font-size: 1.2em; font-weight: bold; color: #ff6b8b;',
+            'font-size: 1em;');
+        console.log('%cNúmero WhatsApp configurado: %c' + SEU_NUMERO_WHATSAPP,
+            'color: #f3a6c0;',
+            'color: #ff6b8b; font-weight: bold;');
+        if (SEU_NUMERO_WHATSAPP === '5561999999999') {
+            console.warn('%c⚠️ Lembre-se de alterar o número de WhatsApp no código! (linha ~350)',
+                'color: #ffb3c6; font-weight: bold;');
+        }
+        console.log('%c✨ Pronto para surpreender! ✨', 'color: #ff8fa8;');
+
+    })();
+</script>
+</body>
+</html>
